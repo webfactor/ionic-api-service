@@ -1,0 +1,22 @@
+{
+  "name": "@webfactor/ionic-api-service",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "url"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "license": "MIT",
+  "main": "./bundles/ionic-api-service.umd.js",
+  "es2015": "./esm2015/ionic-api-service.js",
+  "module": "./esm5/ionic-api-service.es5.js",
+  "typings": "./ionic-api-service.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^5.0.0",
+    "@angular/common": "^5.0.0",
+    "rxjs": "^5.4.2",
+    "lodash": "^4.17.5"
+  }
+}
