@@ -28,7 +28,7 @@ enableMultiLingual(): void
 Sets the default values for languageParameter = ?locale= and preferredLanguage = de
 
 ```typescript
-setPreferredLanguage(baseUrl: string): void
+setPreferredLanguage(language: string): void
 ```
 
 Sets preferredLanguage for requestdata output.
