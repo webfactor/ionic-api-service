@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApiService {
   protected baseUrl: string = '';
+  private languageParameter = '?locale=';
+  private preferredLanguage = 'de';
 
   constructor(protected http: HttpClient) {}
 
@@ -17,29 +19,33 @@ export class ApiService {
     this.baseUrl = baseUrl;
   }
 
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
   get(endpoint: string, params?: any, options?: any): Observable<any> {
     options = this.getOptions(options, params);
-    return this.http.get(this.baseUrl + endpoint, options);
+    return this.http.get(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, options);
   }
 
   post(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.post(this.baseUrl + endpoint, body, options);
+    return this.http.post(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, body, options);
   }
 
   put(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.put(this.baseUrl + endpoint, body, options);
+    return this.http.put(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, body, options);
   }
 
   delete(endpoint: string, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.delete(this.baseUrl + endpoint, options);
+    return this.http.delete(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, options);
   }
 
   patch(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.patch(this.baseUrl + endpoint, body, options);
+    return this.http.patch(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, body, options);
   }
 
   private headers(): HttpHeaders {
@@ -68,4 +74,8 @@ export class ApiService {
 
     return options;
   }
+
+  setPreferredLanguage(language: string): void {
+    this.preferredLanguage = language;
+}
 }
