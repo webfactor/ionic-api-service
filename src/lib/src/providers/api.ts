@@ -8,8 +8,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApiService {
   protected baseUrl: string = '';
-  private languageParameter = '?locale=';
-  private preferredLanguage = 'de';
+  private languageParameter = '';
+  private preferredLanguage = '';
 
   constructor(protected http: HttpClient) {}
 
@@ -17,6 +17,11 @@ export class ApiService {
     let lastChar = _.split(baseUrl, '').pop();
     if (lastChar != '/') baseUrl += '/';
     this.baseUrl = baseUrl;
+  }
+
+  enableMultiLingual():void{
+     this.languageParameter = '?locale=';
+     this.preferredLanguage = 'de';
   }
 
   getBaseUrl(): string {

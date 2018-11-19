@@ -16,6 +16,24 @@ setBaseUrl(baseUrl: string): void
 Sets the base URL for all api requests.
 
 ```typescript
+getBaseUrl(): string
+```
+
+Return the base URL for all api requests.
+
+```typescript
+enableMultiLingual(): void
+```
+
+Sets the default values for languageParameter = ?locale= and preferredLanguage = de
+
+```typescript
+setPreferredLanguage(baseUrl: string): void
+```
+
+Sets preferredLanguage for requestdata output.
+
+```typescript
 get(endpoint: string, params?: any, options?: any): Observable<any>
 post(endpoint: string, body: any, options?: any): Observable<any>
 put(endpoint: string, body: any, options?: any): Observable<any>
