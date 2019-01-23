@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApiService {
   protected baseUrl: string = '';
+  protected apiSuffix: string = '/api/v1';
   private languageParameter = '';
   private preferredLanguage = '';
 
@@ -19,38 +20,68 @@ export class ApiService {
     this.baseUrl = baseUrl;
   }
 
-  enableMultiLingual():void{
-     this.languageParameter = '?locale=';
-     this.preferredLanguage = 'de';
+  enableMultiLingual(): void {
+    this.languageParameter = '?locale=';
+    this.preferredLanguage = 'de';
   }
 
   getBaseUrl(): string {
     return this.baseUrl;
   }
 
+  getApiSuffix(): string {
+    return this.apiSuffix;
+  }
+
+  setApiSuffix(suffix: string): void {
+    this.apiSuffix = suffix;
+  }
+
+  getUrl(): string {
+    return this.getBaseUrl() + this.getApiSuffix();
+  }
+
   get(endpoint: string, params?: any, options?: any): Observable<any> {
     options = this.getOptions(options, params);
-    return this.http.get(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, options);
+    return this.http.get(
+      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      options
+    );
   }
 
   post(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.post(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, body, options);
+    return this.http.post(
+      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      body,
+      options
+    );
   }
 
   put(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.put(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, body, options);
+    return this.http.put(
+      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      body,
+      options
+    );
   }
 
   delete(endpoint: string, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.delete(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, options);
+    return this.http.delete(
+      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      options
+    );
   }
 
   patch(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
-    return this.http.patch(this.baseUrl + endpoint + this.languageParameter + this.preferredLanguage, body, options);
+    return this.http.patch(
+      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      body,
+      options
+    );
   }
 
   private headers(): HttpHeaders {
@@ -82,5 +113,5 @@ export class ApiService {
 
   setPreferredLanguage(language: string): void {
     this.preferredLanguage = language;
-}
+  }
 }

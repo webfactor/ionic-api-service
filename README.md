@@ -22,6 +22,24 @@ getBaseUrl(): string
 Return the base URL for all api requests.
 
 ```typescript
+setApiSuffix(suffix: string): string
+```
+
+Set the Api Suffix. Default /api/v1/
+
+```typescript
+getApiSuffix(): string
+```
+
+Return the api Suffix for all api requests.
+
+```typescript
+getUrl(): string
+```
+
+Return the URL for all api requests (BaseUrl + Api Suffix).
+
+```typescript
 enableMultiLingual(): void
 ```
 
