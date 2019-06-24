@@ -61,6 +61,14 @@ patch(endpoint: string, body: any, options?: any): Observable<any>
 
 Sends requests to the given endpoint.
 
+```typescript
+let headers = new HttpHeaders();
+headers = headers.append('Cache-Control', 'no-cache');
+this.apiService.get('myEndpoint', {}, { headers })
+```
+
+Set Custom Headers
+
 ## Example
 
 ```typescript

@@ -84,32 +84,32 @@ export class ApiService {
     );
   }
 
-  private headers(): HttpHeaders {
-    let headers = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('Accept', 'application/json');
-    return headers;
-  }
-
-  private getOptions(
-    options?: any,
-    params?: any
-  ): { headers?: HttpHeaders; params?: HttpParams; observe?: string; responseType?: string } {
-    if (!options) options = {};
-    options.headers = this.headers();
-    options.observe = 'response';
-
-    if (params) {
-      let httpParams = new HttpParams();
-      for (let key in params) {
-        let value = params[key];
-        if (value) httpParams = httpParams.set(key, value);
-      }
-      options.params = httpParams;
+    private headers(headers): HttpHeaders {
+        if (!headers) headers = new HttpHeaders();
+        headers = headers.append('Content-Type', 'application/json');
+        headers = headers.append('Accept', 'application/json');
+        return headers;
     }
 
-    return options;
-  }
+    private getOptions(
+        options?: any,
+        params?: any
+    ): { headers?: HttpHeaders; params?: HttpParams; observe?: string; responseType?: string } {
+        if (!options) options = {};
+        options.headers = this.headers(options.headers);
+        options.observe = 'response';
+
+        if (params) {
+            let httpParams = new HttpParams();
+            for (let key in params) {
+                let value = params[key];
+                if (value) httpParams = httpParams.set(key, value);
+            }
+            options.params = httpParams;
+        }
+
+        return options;
+    }
 
   setPreferredLanguage(language: string): void {
     this.preferredLanguage = language;
