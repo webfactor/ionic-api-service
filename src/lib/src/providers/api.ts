@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApiService {
   protected baseUrl: string = '';
-  protected apiSuffix: string = '/api/v1';
+  protected apiSuffix: string = 'api/v1/';
   private languageParameter = '';
   private preferredLanguage = '';
 
@@ -41,10 +41,17 @@ export class ApiService {
     return this.getBaseUrl() + this.getApiSuffix();
   }
 
+  getLanguageParameter(endpoint) {
+    if(this.languageParameter && endpoint.includes('?')) return '&locale=';
+    else if(this.languageParameter && !endpoint.includes('?')) return '?locale=';
+    else return '';
+  }
+
   get(endpoint: string, params?: any, options?: any): Observable<any> {
     options = this.getOptions(options, params);
+
     return this.http.get(
-      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
       options
     );
   }
@@ -52,7 +59,7 @@ export class ApiService {
   post(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.post(
-      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
       body,
       options
     );
@@ -61,7 +68,7 @@ export class ApiService {
   put(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.put(
-      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
       body,
       options
     );
@@ -70,7 +77,7 @@ export class ApiService {
   delete(endpoint: string, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.delete(
-      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
       options
     );
   }
@@ -78,7 +85,7 @@ export class ApiService {
   patch(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.patch(
-      this.baseUrl + this.apiSuffix + endpoint + this.languageParameter + this.preferredLanguage,
+      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
       body,
       options
     );
