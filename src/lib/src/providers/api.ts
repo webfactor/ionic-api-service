@@ -7,22 +7,23 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ApiService {
-  protected baseUrl: string = '';
-  protected apiSuffix: string = 'api/v1/';
-  private languageParameter = '';
-  private preferredLanguage = '';
+  protected baseUrl: string = "";
+  protected apiSuffix: string = "api/v1/";
+  private languageParameter = "";
+  private preferredLanguage = "";
+  protected facilityType: string = "";
 
   constructor(protected http: HttpClient) {}
 
   setBaseUrl(baseUrl: string): void {
-    let lastChar = _.split(baseUrl, '').pop();
-    if (lastChar != '/') baseUrl += '/';
+    let lastChar = _.split(baseUrl, "").pop();
+    if (lastChar != "/") baseUrl += "/";
     this.baseUrl = baseUrl;
   }
 
   enableMultiLingual(): void {
-    this.languageParameter = '?locale=';
-    this.preferredLanguage = 'de';
+    this.languageParameter = "?locale=";
+    this.preferredLanguage = "de";
   }
 
   getBaseUrl(): string {
@@ -31,6 +32,14 @@ export class ApiService {
 
   getApiSuffix(): string {
     return this.apiSuffix;
+  }
+
+  getFacilityType(): string {
+    return this.facilityType;
+  }
+
+  setFacilityType(value: string) {
+    this.facilityType = value;
   }
 
   setApiSuffix(suffix: string): void {
@@ -42,16 +51,21 @@ export class ApiService {
   }
 
   getLanguageParameter(endpoint) {
-    if(this.languageParameter && endpoint.includes('?')) return '&locale=';
-    else if(this.languageParameter && !endpoint.includes('?')) return '?locale=';
-    else return '';
+    if (this.languageParameter && endpoint.includes("?")) return "&locale=";
+    else if (this.languageParameter && !endpoint.includes("?"))
+      return "?locale=";
+    else return "";
   }
 
   get(endpoint: string, params?: any, options?: any): Observable<any> {
     options = this.getOptions(options, params);
 
     return this.http.get(
-      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
+      this.baseUrl +
+        this.apiSuffix +
+        endpoint +
+        this.getLanguageParameter(endpoint) +
+        this.preferredLanguage,
       options
     );
   }
@@ -59,7 +73,11 @@ export class ApiService {
   post(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.post(
-      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
+      this.baseUrl +
+        this.apiSuffix +
+        endpoint +
+        this.getLanguageParameter(endpoint) +
+        this.preferredLanguage,
       body,
       options
     );
@@ -68,7 +86,11 @@ export class ApiService {
   put(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.put(
-      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
+      this.baseUrl +
+        this.apiSuffix +
+        endpoint +
+        this.getLanguageParameter(endpoint) +
+        this.preferredLanguage,
       body,
       options
     );
@@ -77,7 +99,11 @@ export class ApiService {
   delete(endpoint: string, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.delete(
-      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
+      this.baseUrl +
+        this.apiSuffix +
+        endpoint +
+        this.getLanguageParameter(endpoint) +
+        this.preferredLanguage,
       options
     );
   }
@@ -85,38 +111,47 @@ export class ApiService {
   patch(endpoint: string, body: any, options?: any): Observable<any> {
     options = this.getOptions(options, null);
     return this.http.patch(
-      this.baseUrl + this.apiSuffix + endpoint + this.getLanguageParameter(endpoint) + this.preferredLanguage,
+      this.baseUrl +
+        this.apiSuffix +
+        endpoint +
+        this.getLanguageParameter(endpoint) +
+        this.preferredLanguage,
       body,
       options
     );
   }
 
-    private headers(headers): HttpHeaders {
-        if (!headers) headers = new HttpHeaders();
-        headers = headers.append('Content-Type', 'application/json');
-        headers = headers.append('Accept', 'application/json');
-        return headers;
+  private headers(headers): HttpHeaders {
+    if (!headers) headers = new HttpHeaders();
+    headers = headers.append("Content-Type", "application/json");
+    headers = headers.append("Accept", "application/json");
+    return headers;
+  }
+
+  private getOptions(
+    options?: any,
+    params?: any
+  ): {
+    headers?: HttpHeaders;
+    params?: HttpParams;
+    observe?: string;
+    responseType?: string;
+  } {
+    if (!options) options = {};
+    options.headers = this.headers(options.headers);
+    options.observe = "response";
+
+    if (params) {
+      let httpParams = new HttpParams();
+      for (let key in params) {
+        let value = params[key];
+        if (value) httpParams = httpParams.set(key, value);
+      }
+      options.params = httpParams;
     }
 
-    private getOptions(
-        options?: any,
-        params?: any
-    ): { headers?: HttpHeaders; params?: HttpParams; observe?: string; responseType?: string } {
-        if (!options) options = {};
-        options.headers = this.headers(options.headers);
-        options.observe = 'response';
-
-        if (params) {
-            let httpParams = new HttpParams();
-            for (let key in params) {
-                let value = params[key];
-                if (value) httpParams = httpParams.set(key, value);
-            }
-            options.params = httpParams;
-        }
-
-        return options;
-    }
+    return options;
+  }
 
   setPreferredLanguage(language: string): void {
     this.preferredLanguage = language;
